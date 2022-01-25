@@ -10,12 +10,20 @@ function App() {
     }
   }
 
+  const addOrRemove = (refs, action) => {
+    for(let rf of refs) {
+      if(rf.current) {
+        rf.current[action]('scroll', handleScroll);
+      }
+    }
+  }
+
   useEffect(() => {
     if (scrollRefs && scrollRefs.current) {
-      for (let rf of scrollRefs.current) {
-        if (rf.current) {
-          rf.current.addEventListener('scroll', handleScroll);
-        }
+      addOrRemove(scrollRefs.current, 'addEventListener');
+
+      return () => {
+        addOrRemove(scrollRefs.current, 'removeEventListener');
       }
     }
   }, []);
